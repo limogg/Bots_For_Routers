@@ -1,0 +1,1 @@
+starting_site = 'https://emulator.tp-link.com/Archer%20A6(US)4.0_AP_Emulator/index.html#networkMap'
