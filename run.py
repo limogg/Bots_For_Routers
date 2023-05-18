@@ -1,9 +1,11 @@
-from Halny.halny import Halny
+from Router.router import Router
 
-halny = Halny()
+router = Router()
 
-halny.open_starting_site()
-halny.go_to_advanced_settings()
+router.open_starting_site()
+router.switch_to_navbar()
+router.go_and_set_interface()
+
 
 
 
