@@ -42,8 +42,8 @@ class Router():
 
 
     #switch to frame and go to interface setup
-    def go_and_set_interface(self, PPoE, password, vlan):
-        ppoe = PPoE
+    def go_and_set_interface(self, PPpoE, password, vlan):
+        pppoe = PPpoE
         password = password
         vlan = vlan
 
@@ -52,27 +52,61 @@ class Router():
 
         self.switch_to_main()
 
-        choose_ppoe = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[1]/tbody/tr[4]/td[5]/input')
-        choose_ppoe.click()
+        choose_pppoe = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[1]/tbody/tr[4]/td[5]/input')
+        time.sleep(0.2)
+        choose_pppoe.click()
 
         choose_vlan = driver.find_element(By.XPATH, '//*[@id="div_8021q"]/table/tbody/tr[2]/td[5]/input[1]')
+        time.sleep(0.2)
         choose_vlan.click()
 
         pass_vlan = driver.find_element(By.XPATH, '//*[@id="div_8021q"]/table/tbody/tr[3]/td[5]/input')
+        pass_vlan.clear()
+        time.sleep(0.2)
         pass_vlan.send_keys(vlan)
 
         pass_username = driver.find_element(By.XPATH, '//*[@id="div_isp2"]/table/tbody/tr[2]/td[5]/input')
-        pass_username.send_keys(ppoe)
+        pass_username.clear()
+        time.sleep(0.2)
+        pass_username.send_keys(pppoe)
 
         pass_pasword = driver.find_element(By.XPATH, '//*[@id="div_isp2"]/table/tbody/tr[4]/td[5]/input')
+        pass_pasword.clear()
+        time.sleep(0.2)
         pass_pasword.send_keys(password)
 
         set_ip_adress = driver.find_element(By.XPATH, '//*[@id="div_ipv4getip"]/table/tbody/tr[2]/td[5]/input[2]')
+        time.sleep(0.2)
         set_ip_adress.click()
 
         #comented for easier work
         # save_interface = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[3]/tbody/tr/td[3]/input[1]')
         # save_interface.click()
+
+    def set_wifi(self, client_id, password):
+        client_id = client_id
+        password = password
+        wifi_name = 'siec_'+client_id
+
+        wifi = driver.find_element(By.XPATH, '//*[@id="subnavibar"]/td[5]/a')
+        wifi.click()
+        self.switch_to_main()
+
+        set_wifi_name = driver.find_element(By.XPATH, '/html/body/form/div/table[2]/tbody/tr[3]/td[5]/input[3]')
+        set_wifi_name.clear()
+        set_wifi_name.send_keys(wifi_name)
+
+        set_wifi_password = driver.find_element(By.XPATH, '//*[@id="WPAPSKWPA2PSK_div"]/table/tbody/tr[3]/td[5]/input')
+        set_wifi_password.clear()
+
+        wait = WebDriverWait(driver, 5)
+        alert = wait.until(EC.alert_is_present())
+        alert.accept()
+        time.sleep(0.2)
+        set_wifi_password.send_keys(password)
+
+
+
 
 
 
