@@ -79,16 +79,17 @@ class Router():
         time.sleep(0.2)
         set_ip_adress.click()
 
-        #comented for easier work
-        # save_interface = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[3]/tbody/tr/td[3]/input[1]')
-        # save_interface.click()
+        save_interface = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[3]/tbody/tr/td[3]/input[1]')
+        save_interface.click()
 
-    def set_wifi(self, client_id, password):
+    def set_wifi(self, client_id, password, GHz, Xpath):
+        Xpath = Xpath
+        GHz = GHz
         client_id = client_id
         password = password
-        wifi_name = 'siec_'+client_id
+        wifi_name = 'siec_'+client_id+GHz
 
-        wifi = driver.find_element(By.XPATH, '//*[@id="subnavibar"]/td[5]/a')
+        wifi = driver.find_element(By.XPATH, Xpath)
         wifi.click()
         self.switch_to_main()
 
@@ -99,11 +100,38 @@ class Router():
         set_wifi_password = driver.find_element(By.XPATH, '//*[@id="WPAPSKWPA2PSK_div"]/table/tbody/tr[3]/td[5]/input')
         set_wifi_password.clear()
 
+        #wait for error window than accept it
         wait = WebDriverWait(driver, 5)
         alert = wait.until(EC.alert_is_present())
         alert.accept()
         time.sleep(0.2)
+
         set_wifi_password.send_keys(password)
+
+        save = driver.find_element(By.XPATH, '/html/body/form/div/div[4]/table[3]/tbody/tr/td[3]/input[1]')
+        save.click()
+
+    #set Acl
+    def set_ACL(self):
+        acl = driver.find_element(By.XPATH, '//*[@id="mainnavibar"]/td[3]/a')
+        acl.click()
+
+        acl_navbar = driver.find_element(By.XPATH, '//*[@id="subnavibar"]/td[5]/a')
+        acl_navbar.click()
+
+        self.switch_to_main()
+
+        acl_click = driver.find_element(By.XPATH, '/html/body/table[1]/tbody/tr[3]/td[5]/input[4]')
+        acl_click.click()
+
+        acl_pass_port = driver.find_element(By.XPATH, '//*[@id="idWebMgmtWanPort"]')
+        acl_pass_port.clear()
+        acl_pass_port.send_keys(const.port)
+
+        acl_set = driver.find_element(By.XPATH,'/html/body/table[1]/tbody/tr[8]/td[3]/input[2]')
+        acl_set.click()
+
+
 
 
 
