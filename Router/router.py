@@ -10,6 +10,7 @@ from  selenium.webdriver.support.ui import  WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
+
 options = Options()
 #debug line if you want driver to quit after setting everything just comment it
 options.add_experimental_option("detach", True)
@@ -79,15 +80,19 @@ class Router():
         time.sleep(0.2)
         set_ip_adress.click()
 
-        save_interface = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[3]/tbody/tr/td[3]/input[1]')
-        save_interface.click()
+        save = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[3]/tbody/tr/td[3]/input[1]')
+        save.click()
 
     def set_wifi(self, client_id, password, GHz, Xpath):
         Xpath = Xpath
         GHz = GHz
         client_id = client_id
         password = password
-        wifi_name = 'siec_'+client_id+GHz
+
+        if GHz == True:
+            wifi_name = 'siec_' + client_id+'_5Ghz'
+        else:
+            wifi_name = 'siec_'+client_id
 
         wifi = driver.find_element(By.XPATH, Xpath)
         wifi.click()
@@ -101,15 +106,17 @@ class Router():
         set_wifi_password.clear()
 
         #wait for error window than accept it
-        wait = WebDriverWait(driver, 5)
+        wait = WebDriverWait(driver,20)
         alert = wait.until(EC.alert_is_present())
+        time.sleep(1)
         alert.accept()
-        time.sleep(0.2)
+        time.sleep(1)
 
         set_wifi_password.send_keys(password)
 
-        save = driver.find_element(By.XPATH, '/html/body/form/div/div[4]/table[3]/tbody/tr/td[3]/input[1]')
-        save.click()
+        self.auto_gui.save()
+
+
 
     #set Acl
     def set_ACL(self):
@@ -129,6 +136,7 @@ class Router():
         acl_pass_port.send_keys(const.port)
 
         acl_set = driver.find_element(By.XPATH,'/html/body/table[1]/tbody/tr[8]/td[3]/input[2]')
+        time.sleep(1)
         acl_set.click()
 
 

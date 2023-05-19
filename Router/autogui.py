@@ -1,7 +1,8 @@
 import Router.constants as const
 import pyautogui
 import time
-
+import os
+from PIL import Image
 
 
 class Auto_Gui:
@@ -13,5 +14,9 @@ class Auto_Gui:
         pyautogui.press('tab')
         time.sleep(1)
         pyautogui.typewrite(const.admin_password)
+        time.sleep(1)
+        pyautogui.press('enter')
+
+    def save(self):
         time.sleep(1)
         pyautogui.press('enter')
