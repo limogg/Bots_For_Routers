@@ -83,6 +83,48 @@ class Router():
         save = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[3]/tbody/tr/td[3]/input[1]')
         save.click()
 
+    #set second interface for tv
+    def set_interface_for_tv(self, tv_vlan):
+        tv_vlan = tv_vlan
+        wan_number = '2'
+
+        interface = driver.find_element(By.XPATH, '//*[@id="mainnavibar"]/td[1]/a')
+        interface.click()
+        self.switch_to_main()
+
+        change_wan = driver.find_element(By.XPATH, '/html/body/form/div/table/tbody/tr[5]/td[5]/select')
+        change_wan.click()
+        self.auto_gui.change_wan(wan_number)
+
+        make_active = driver.find_element(By.XPATH, '/html/body/form/div/table/tbody/tr[6]/td[5]/input[1]')
+        make_active.click()
+
+        select_tag = driver.find_element(By.XPATH, '//*[@id="div_8021q"]/table/tbody/tr[2]/td[5]/input[1]')
+        select_tag.click()
+
+        type_vlan = driver.find_element(By.XPATH, '//*[@id="div_8021q"]/table/tbody/tr[3]/td[5]/input')
+        type_vlan.get_attribute('text')
+        type_vlan.clear()
+        time.sleep(0.2)
+        type_vlan.click()
+        #type_vlan.clear()
+        #self.wait_for_allert_than_click()
+        self.auto_gui.send_keys_to_input(tv_vlan)
+
+
+        save_wan = driver.find_element(By.XPATH, '/html/body/form/div/div[2]/table[3]/tbody/tr/td[3]/input[1]')
+        save_wan.click()
+
+    #set port binding for tv
+    def set_port_binding(self):
+        go_to_advanced = driver.find_element(By.XPATH, '//*[@id="mainnavibar"]/td[2]/a')
+        go_to_advanced.click()
+
+        go_to_port_binding = driver.find_element(By.XPATH, '//*[@id="subnavibar"]/td[5]/a')
+        go_to_port_binding.click()
+
+        self.switch_to_main()
+
     def set_wifi(self, client_id, password, GHz, Xpath):
         Xpath = Xpath
         GHz = GHz
@@ -116,8 +158,6 @@ class Router():
 
         self.auto_gui.save()
 
-
-
     #set Acl
     def set_ACL(self):
         acl = driver.find_element(By.XPATH, '//*[@id="mainnavibar"]/td[3]/a')
@@ -139,7 +179,14 @@ class Router():
         time.sleep(1)
         acl_set.click()
 
-
+    #wait for alert than click it
+    def wait_for_allert_than_click(self):
+        # wait for error window than accept it
+        wait = WebDriverWait(driver, 20)
+        alert = wait.until(EC.alert_is_present())
+        time.sleep(1)
+        alert.accept()
+        time.sleep(1)
 
 
 
