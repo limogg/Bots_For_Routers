@@ -7,4 +7,5 @@ admin_password = hidden.admin_password
 wifi_24_xpath = '//*[@id="subnavibar"]/td[5]/a'
 wifi_5_xpath = '//*[@id="subnavibar"]/td[7]/a/div/font'
 port = '12345'
-
+wan1 = '0'
+wan2 ='1'

@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from  selenium.webdriver.support.ui import  WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
+
 
 
 options = Options()
@@ -27,7 +27,6 @@ class Router():
         driver.get(default_ip)
         self.auto_gui.login_to_site()
 
-
     #Seek for navbar than change to his frame
     def switch_to_navbar(self):
         driver.switch_to.default_content()
@@ -39,8 +38,6 @@ class Router():
         driver.switch_to.default_content()
         frame = driver.find_element(By.XPATH, '/html/frameset/frame[3]')
         driver.switch_to.frame(frame)
-
-
 
     #switch to frame and go to interface setup
     def go_and_set_interface(self, PPpoE, password, vlan):
@@ -116,7 +113,9 @@ class Router():
         save_wan.click()
 
     #set port binding for tv
-    def set_port_binding(self):
+    def set_port_binding(self, number_of_tv):
+        number_of_tv = number_of_tv
+
         go_to_advanced = driver.find_element(By.XPATH, '//*[@id="mainnavibar"]/td[2]/a')
         go_to_advanced.click()
 
@@ -124,6 +123,40 @@ class Router():
         go_to_port_binding.click()
 
         self.switch_to_main()
+
+        set_grop_index = driver.find_element(By.XPATH, '//*[@id="PortBind_Index"]')
+        set_grop_index.click()
+        self.auto_gui.change_wan(const.wan1)
+
+        #Unbinding ports for tv
+        max_tv = 4
+        tv = max_tv
+        for i in range(number_of_tv):
+
+            unbind_port = driver.find_element(By.ID, 'PortBind_Ethernet_Port_'+str(tv))
+            unbind_port.click()
+            tv -=1
+
+        save = driver.find_element(By.XPATH, '/html/body/form/div/table[3]/tbody/tr/td[3]/input[1]')
+        save.click()
+
+        #bind ports
+        set_grop_index = driver.find_element(By.XPATH, '//*[@id="PortBind_Index"]')
+        set_grop_index.click()
+        self.auto_gui.change_wan(const.wan2)
+
+        set_ewan2 = driver.find_element(By.XPATH, '//*[@id="PortBind_WAN0_Port_0_2"]')
+        set_ewan2.click()
+
+
+        tv_set = max_tv
+        for i in range(number_of_tv):
+            unbind_port = driver.find_element(By.ID, 'PortBind_Ethernet_Port_' + str(tv_set))
+            unbind_port.click()
+            tv_set -= 1
+
+        save = driver.find_element(By.XPATH, '/html/body/form/div/table[3]/tbody/tr/td[3]/input[1]')
+        save.click()
 
     def set_wifi(self, client_id, password, GHz, Xpath):
         Xpath = Xpath
@@ -187,6 +220,50 @@ class Router():
         time.sleep(1)
         alert.accept()
         time.sleep(1)
+
+    #set internet
+    def set_internet(self, default_ip, PPpoE, password, vlan, client_id, ghz2, xpath24, ghz5, xpath5):
+        default_ip = default_ip
+
+        PPpoE = PPpoE
+        password = password
+
+        vlan = vlan
+        client_id = client_id
+
+        ghz2 = ghz2
+        ghz5 = ghz5
+
+        xpath24 = xpath24
+        xpath5 = xpath5
+
+        self.open_starting_site(default_ip)
+        #set internet
+        self.switch_to_navbar()
+        self.go_and_set_interface(PPpoE, password, vlan)
+
+        #pass all value than set wifi2.4
+        self.switch_to_navbar()
+        self.set_wifi(client_id, password, ghz2, xpath24)
+
+        #pass all value than set wifi5
+        self.switch_to_navbar()
+        self.set_wifi(client_id, password, ghz5, xpath5)
+
+        #set acl
+        self.switch_to_navbar()
+        self.set_ACL()
+
+    #add tv
+    def add_tv(self, tv_vlan, number_of_tv):
+        tv_vlan = tv_vlan
+        number_of_tv = number_of_tv
+        self.switch_to_navbar()
+        self.set_interface_for_tv(tv_vlan)
+
+        self.switch_to_navbar()
+        self.set_port_binding(number_of_tv)
+
 
 
 

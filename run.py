@@ -1,16 +1,27 @@
-from Router.router import Router
 import Router.constants as const
 
 
 default_ip = const.starting_site
 
-#debug purpose only set to input when finished
-PPpoE = 'user'
-password = 'password1234'
-vlan = '100'
-client_id = '1234'
-tv_vlan = '123'
+custom_ip = input('If you want too pass diferent ip adress you can pas it here else press enter and it will be default: ')
 
+if custom_ip == "":
+    custom_ip = default_ip
+else:
+    custom_ip = 'http://'+custom_ip+'/'
+
+print(custom_ip)
+
+PPpoE = input('Send PPoE name: ')
+password = input('Send user password: ')
+vlan = str(input('Send internet vlan: '))
+client_id = str(input('Send client id: '))
+number_of_tv = int(input('Send number of tv: '))
+if number_of_tv > 0:
+    tv_vlan =input('Send tv vlan: ')
+
+else:
+    tv_vlan = '0'
 
 #false to dont set 5ghz name
 ghz2 = False
@@ -21,36 +32,18 @@ ghz5 = True
 xpath24 = const.wifi_24_xpath
 xpath5 = const.wifi_5_xpath
 
+#moved here because it open blank site before taking input
+from Router.router import Router
 
 router = Router()
 
-router.open_starting_site(default_ip)
-
-# router.switch_to_navbar()
-# router.set_port_binding()
-
-
 #set internet
-router.switch_to_navbar()
-router.go_and_set_interface(PPpoE, password, vlan)
+router.set_internet(custom_ip, PPpoE, password, vlan, client_id, ghz2, xpath24, ghz5, xpath5)
 
-#pass all value than set wifi2.4
-router.switch_to_navbar()
-router.set_wifi(client_id, password, ghz2, xpath24)
+if number_of_tv != 0:
+    router.add_tv(tv_vlan, number_of_tv)
 
-#pass all value than set wifi5
-router.switch_to_navbar()
-router.set_wifi(client_id, password, ghz5, xpath5)
 
-#set acl
-router.switch_to_navbar()
-router.set_ACL()
-
-#set tv vlan
-router.switch_to_navbar()
-router.set_interface_for_tv(tv_vlan)
-
-#set port binding
 
 
 
