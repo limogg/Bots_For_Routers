@@ -10,8 +10,6 @@ if custom_ip == "":
 else:
     custom_ip = 'http://'+custom_ip+'/'
 
-print(custom_ip)
-
 PPpoE = input('Send PPoE name: ')
 password = input('Send user password: ')
 vlan = str(input('Send internet vlan: '))
