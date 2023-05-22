@@ -1,8 +1,7 @@
 import Router.constants as const
 import pyautogui
 import time
-import os
-from PIL import Image
+
 
 
 class Auto_Gui:
